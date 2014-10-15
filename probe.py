@@ -33,13 +33,14 @@ def readList():
 def generatePayload(commandList):
 	payload = {}
 	for commandArr in commandList:
+		payload[commandArr[0]] = {}
 		print("Running command " + str(commandArr[0]) + " : " + commandArr[1])
-		payload['c' + str(commandArr[0])] = commandArr[1] #Save original command in payload.
+		payload[commandArr[0]]['c'] = commandArr[1] #Save original command in payload.
 		status, output = execute(command=commandArr[1])
 		if commandArr[2]:
 			#Send command output.
-			payload['o' + str(commandArr[0])] = output
-		payload['s' + str(commandArr[0])] = status
+			payload[commandArr[0]]['o'] = output
+		payload[commandArr[0]]['s'] = status
 	return payload
 
 
@@ -85,6 +86,6 @@ try:
 			print("ERR: Could not read Response: " + r.text)
 	else:
 		#Response is bad.. couldn't contact?
-		print("ERR: Server returned status code: " + r.status_code)
+		print("ERR: Server returned status code: " + str(r.status_code))
 except ConnectionError:
 	print("ERR: Could not connect to server.")
